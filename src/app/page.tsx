@@ -1,8 +1,15 @@
 'use client'
 import CourseCatalog from '@/components/CourseCatalog'
-
-import React from 'react'
+import CustonCarousel from "@/components/CustomCarousel"
 
 export default function Home() {
-  return <CourseCatalog />
+
+  return (
+
+    <>
+    <CustonCarousel/>
+    <CourseCatalog />
+    </>
+  )
 }
+
