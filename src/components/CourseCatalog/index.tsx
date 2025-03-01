@@ -1,3 +1,4 @@
+'use client'
 import { useMemo, useState } from 'react'
 import CourseCategories from './components/CourseCategories'
 import CourseList from './components/CourseList'
@@ -48,10 +49,10 @@ export default function CourseCatalog() {
   const courses = coursesByCategory[selectedCategory] || []
 
   return (
-    <>
-      <div className="  max-w-[1440px] ml-auto mr-auto ">
+    <div className="py-14">
+      <div className="  max-w-[1440px]  ml-auto  mr-auto ">
         <div className="py-6 px-4">
-          <h1 className="text-slate-700  text-3xl font-semibold md:text-5xl  ">
+          <h1 className="text-primary-800 font-serif text-2xl font-semibold md:text-5xl  ">
             Formação Municipal
           </h1>
           <p className="text-gray-500 text-lg md:text-xl  mt-4">
@@ -65,8 +66,8 @@ export default function CourseCatalog() {
         />
       </div>
 
-      <div className="bg-lightBackground">
-        <div className="max-w-[1440px] ml-auto py-4 flex gap-4 mr-auto ">
+      <div className="bg-lightBackground pb-11">
+        <div className="max-w-[1440px] ml-auto p-4 flex gap-4 mr-auto ">
           {courses.map((course) => (
             <CourseList
               key={course.title}
@@ -74,10 +75,11 @@ export default function CourseCatalog() {
               description={course.description}
               url={course.url}
               image={course.image}
+              // duration={'10h'}
             />
           ))}
         </div>
       </div>
-    </>
+    </div>
   )
 }

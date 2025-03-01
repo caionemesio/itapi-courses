@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react'
 
 import {
@@ -33,8 +34,8 @@ export default function CourseList({
           />
         </div>
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
+          <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+          <CardDescription className="">{description}</CardDescription>
         </CardHeader>
       </Card>
     </a>

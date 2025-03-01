@@ -1,15 +1,14 @@
 'use client'
 import CourseCatalog from '@/components/CourseCatalog'
-import CustonCarousel from "@/components/CustomCarousel"
+import CustomCarousel from '@/components/CustomCarousel'
+import ReasonsToTakeTheCourse from '@/components/ReasonsToTakeTheCourse'
 
 export default function Home() {
-
   return (
-
     <>
-    <CustonCarousel/>
-    <CourseCatalog />
+      <CustomCarousel />
+      <CourseCatalog />
+      <ReasonsToTakeTheCourse />
     </>
   )
 }
-

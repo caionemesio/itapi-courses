@@ -21,7 +21,16 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          50: '#eaf3ff', // tom bem claro
+          100: '#c8d9ff',
+          200: '#a5beff',
+          300: '#82a4ff',
+          400: '#5f8aff',
+          DEFAULT: '#2765D4',
+          600: '#1f4db3',
+          700: '#183793',
+          800: '#122d72',
+          900: '#0b1952',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
@@ -50,7 +59,7 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
-        lightBackground: '#f0f6ff',
+        lightBackground: '#f5f5f5',
       },
       borderRadius: {
         lg: 'var(--radius)',

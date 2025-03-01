@@ -25,7 +25,7 @@ export default function CourseCategories({
   ]
 
   return (
-    <div>
+    <div className="pl-2">
       <div className="hidden border-b border-gray-300  md:flex gap-4 ">
         {courseCategories.map((category) => (
           <Button
@@ -33,8 +33,8 @@ export default function CourseCategories({
             onClick={() => setSelectedCategory(category.id)}
             className={`bg-transparent text-lg rounded-none font-semibold shadow-none border-0 border-b-2 ${
               selectedCategory === category.id
-                ? 'border-black text-gray-800'
-                : 'border-transparent text-gray-500'
+                ? 'border-primary-800 text-primary-800'
+                : 'border-transparent text-primary-600'
             } `}
             variant="outline"
             size="sm"
