@@ -1,4 +1,4 @@
-// components/Header.tsx
+'use client'
 import Link from 'next/link'
 import { Input } from '../ui/input'
 import { SearchIcon } from 'lucide-react'

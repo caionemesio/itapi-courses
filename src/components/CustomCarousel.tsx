@@ -14,16 +14,16 @@ import Image from 'next/image'
 
 export default function CustomCarousel() {
   const arrayImages = [
-    { url: '/studant.png', name: 'estudante' },
-    { url: '/secjuv.png', name: '/secjuv.png' },
+    { url: '/advice-secjuv.png', name: 'secretaria da juventude imagem' },
+    { url: '/advice-secjuv.png', name: 'secretaria da juventude imagem' },
   ]
 
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true }),
   )
   return (
-    <div className="">
-      <div className="h-96 flex justify-center items-center max-w-6xl mx-auto">
+    <div className="mt-4">
+      <div className="min-h-[400px] flex justify-center items-center max-w-5xl mx-auto">
         <Carousel
           plugins={[plugin.current]}
           onMouseEnter={plugin.current.stop}
@@ -31,14 +31,14 @@ export default function CustomCarousel() {
         >
           <CarouselContent>
             {arrayImages.map((image, index) => (
-              <CarouselItem key={index}>
-                <div className="flex justify-center items-center bg-slate-500">
+              <CarouselItem key={index} className="min-w-[400px]">
+                <div className="relative w-full h-[400px]    ">
                   <Image
                     src={image.url}
-                    width={600}
-                    height={400}
+                    fill
                     alt={image.name}
-                    className="w-full h-96"
+                    className="object-cover"
+                    quality={100}
                   />
                 </div>
               </CarouselItem>

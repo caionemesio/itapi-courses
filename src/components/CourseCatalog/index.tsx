@@ -3,6 +3,13 @@ import { useMemo, useState } from 'react'
 import CourseCategories from './components/CourseCategories'
 import CourseList from './components/CourseList'
 import { Course } from './types'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
 
 export default function CourseCatalog() {
   const coursesByCategory: Record<number, Course[]> = useMemo(
@@ -22,6 +29,18 @@ export default function CourseCatalog() {
         },
         {
           title: 'Curso de Angular',
+          description: 'Aprenda a criar aplicações web com Angular',
+          url: 'https://www.alura.com.br/',
+          image: '/curso-tecnico.jpg',
+        },
+        {
+          title: 'Curso de Andsgular',
+          description: 'Aprenda a criar aplicações web com Angular',
+          url: 'https://www.alura.com.br/',
+          image: '/curso-tecnico.jpg',
+        },
+        {
+          title: 'Curso de sdAngular',
           description: 'Aprenda a criar aplicações web com Angular',
           url: 'https://www.alura.com.br/',
           image: '/curso-tecnico.jpg',
@@ -50,12 +69,12 @@ export default function CourseCatalog() {
 
   return (
     <div className="py-14">
-      <div className="  max-w-[1440px]  ml-auto  mr-auto ">
+      <div className="max-w-[1440px] mx-auto">
         <div className="py-6 px-4">
-          <h1 className="text-primary-800 font-serif text-2xl font-semibold md:text-5xl  ">
+          <h1 className="text-primary-800 font-serif text-2xl font-semibold md:text-5xl">
             Formação Municipal
           </h1>
-          <p className="text-gray-500 text-lg md:text-xl  mt-4">
+          <p className="text-gray-500 text-lg md:text-xl mt-4">
             Cursos e capacitações para transformar sua carreira e te preparar
             para o mercado de trabalho
           </p>
@@ -66,20 +85,28 @@ export default function CourseCatalog() {
         />
       </div>
 
-      <div className="bg-lightBackground pb-11">
-        <div className="max-w-[1440px] ml-auto p-4 flex gap-4 mr-auto ">
-          {courses.map((course) => (
-            <CourseList
-              key={course.title}
-              title={course.title}
-              description={course.description}
-              url={course.url}
-              image={course.image}
-              // duration={'10h'}
-            />
-          ))}
+      <Carousel className="bg-lightBackground pb-11">
+        <div className="max-w-[1440px] mx-auto p-4">
+          <CarouselContent>
+            {courses.map((course) => (
+              <CarouselItem
+                key={course.title}
+                className="basis-1/3 h-80%"
+                // Define que cada item ocupe 80% do container (ajuste conforme necessário)
+              >
+                <CourseList
+                  title={course.title}
+                  description={course.description}
+                  url={course.url}
+                  image={course.image}
+                />
+              </CarouselItem>
+            ))}
+            <CarouselPrevious />
+            <CarouselNext />
+          </CarouselContent>
         </div>
-      </div>
+      </Carousel>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 import CertificateIcon from '../../../public/Certificate-icon'
 import GrowthGraphIcon from '../../../public/Growh-grph-icon'
-import PeopleConnectionsIcon from '../../../public/PeopleConnectionsIcon'
+import EntrepreneurshipInnovationIcon from '../../../public/EntrepreneurshipInnovationIcon'
 import CardReasons from './components/CardReasons'
 import { CardReasonsType } from './components/types'
 
@@ -23,7 +23,7 @@ export default function ReasonsToTakeTheCourse() {
       title: 'Empreendedorismo e Inovação',
       description:
         'Desperte seu espírito empreendedor com cursos que incentivam a criatividade e oferecem estratégias para inovar e crescer no mercado.',
-      Icon: PeopleConnectionsIcon,
+      Icon: EntrepreneurshipInnovationIcon,
     },
   ]
   return (
