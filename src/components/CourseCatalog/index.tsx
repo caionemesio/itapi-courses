@@ -60,7 +60,6 @@ export default function CourseCatalog() {
           image: '/curso-tecnico.jpg',
         },
       ],
-      // Adicione outras categorias conforme necessário
     }),
     [],
   )
@@ -85,14 +84,17 @@ export default function CourseCatalog() {
         />
       </div>
 
-      <Carousel className="bg-lightBackground pb-11">
-        <div className="max-w-[1440px] mx-auto p-4">
-          <CarouselContent>
+      <div className="bg-lightBackground pb-11 ">
+        <Carousel className="relative overflow-visible max-w-[1440px] mx-auto px-8">
+          <CarouselContent className="flex gap-4 ">
             {courses.map((course) => (
               <CarouselItem
                 key={course.title}
-                className="basis-1/3 h-80%"
-                // Define que cada item ocupe 80% do container (ajuste conforme necessário)
+                className="
+                  flex-[0_0_auto]
+                  min-w-[250px]
+                  p-2
+                "
               >
                 <CourseList
                   title={course.title}
@@ -102,11 +104,12 @@ export default function CourseCatalog() {
                 />
               </CarouselItem>
             ))}
-            <CarouselPrevious />
-            <CarouselNext />
           </CarouselContent>
-        </div>
-      </Carousel>
+
+          <CarouselPrevious className="absolute -left-3 top-1/2 -translate-y-1/2" />
+          <CarouselNext className="absolute -right-3 top-1/2 -translate-y-1/2" />
+        </Carousel>
+      </div>
     </div>
   )
 }
