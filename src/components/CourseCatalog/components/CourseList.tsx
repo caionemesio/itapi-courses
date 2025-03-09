@@ -8,6 +8,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Image from 'next/image'
+import Link from 'next/link'
+import { slugifyFunction } from '@/utils/slugyfyFunction'
 
 interface CourseListProps {
   title: string
@@ -19,11 +21,12 @@ interface CourseListProps {
 export default function CourseList({
   title,
   description,
-  url,
   image,
 }: CourseListProps) {
+  const slug = slugifyFunction(title)
+
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="block">
+    <Link href={`/cursos/${slug}`} target="_blank" rel="noopener noreferrer">
       <Card className="w-[350px] min-h-72">
         <div className="relative w-full h-48">
           <Image
@@ -38,6 +41,6 @@ export default function CourseList({
           <CardDescription className="">{description}</CardDescription>
         </CardHeader>
       </Card>
-    </a>
+    </Link>
   )
 }

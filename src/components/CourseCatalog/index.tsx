@@ -70,7 +70,7 @@ export default function CourseCatalog() {
     <div className="py-14">
       <div className="max-w-[1440px] mx-auto">
         <div className="py-6 px-4">
-          <h1 className="text-primary-800 font-serif text-2xl font-semibold md:text-5xl">
+          <h1 className="text-primary-800  text-2xl font-semibold md:text-5xl">
             Formação Municipal
           </h1>
           <p className="text-gray-500 text-lg md:text-xl mt-4">
