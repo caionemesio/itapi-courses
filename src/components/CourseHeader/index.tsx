@@ -8,7 +8,7 @@ export default function CourseHeader({
   videoUrl,
 }: CourseHeaderProps) {
   return (
-    <div className="bg-primary-900 py-16">
+    <div className="bg-primary-900 px-4 py-16">
       <div className="mx-auto max-w-[1220px] flex flex-col gap-8 md:flex-row items-center">
         <div className="flex-1 ml-4 xl:ml-0">
           <h1 className="text-3xl font-semibold text-white">{title}</h1>

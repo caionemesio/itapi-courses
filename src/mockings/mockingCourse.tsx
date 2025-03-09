@@ -1,3 +1,5 @@
+import { Award, Users, BookOpen, Headphones } from 'lucide-react'
+
 export const mockingCourse = {
   title: 'Curso de Empreendedorismo',
   description:
@@ -12,6 +14,24 @@ export const mockingCourse = {
     'Ferramentas e Tecnologias: Conheça plataformas e softwares que otimizam processos de vendas, atendimento e gestão.',
     'Captação de Investimentos: Aprenda a preparar um pitch convincente para atrair investidores e parcerias estratégicas.',
     'Networking e Relacionamentos: Fortaleça sua rede de contatos e estabeleça conexões que podem alavancar seu negócio.',
+  ],
+  courseOffers: [
+    {
+      icon: <Award className="h-5 w-5" />,
+      description: 'Certificado ao concluir',
+    },
+    {
+      icon: <Users className="h-5 w-5" />,
+      description: 'Professores capacitados',
+    },
+    {
+      icon: <BookOpen className="h-5 w-5" />,
+      description: 'Acesso a material exclusivo',
+    },
+    {
+      icon: <Headphones className="h-5 w-5" />,
+      description: 'Suporte 24/7',
+    },
   ],
   formsUrl:
     'https://docs.google.com/forms/d/e/1FAIpQLSccKuALN9RY6jx88nG8_jMwZRXtHR3O3wh68yR8Uh7AnJdtrQ/viewform',

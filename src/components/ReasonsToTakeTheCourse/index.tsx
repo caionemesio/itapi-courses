@@ -28,7 +28,7 @@ export default function ReasonsToTakeTheCourse() {
   ]
   return (
     <div className="  max-w-[1440px] ml-auto mr-auto mt-4 p-4 ">
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-col gap-5 md:flex-row md:gap-0">
         {cards.map((card, index) => (
           <CardReasons key={index} {...card} />
         ))}
