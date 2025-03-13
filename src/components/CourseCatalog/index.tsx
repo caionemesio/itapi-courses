@@ -84,16 +84,16 @@ export default function CourseCatalog() {
         />
       </div>
 
-      <div className="bg-lightBackground pb-11 ">
-        <Carousel className="relative overflow-visible max-w-[1440px] mx-auto px-8">
-          <CarouselContent className="flex gap-4 ">
+      <div className="bg-lightBackground pb-11 w-full ">
+        <Carousel className="relative overflow-hidden  max-w-[1440px] mx-auto px-12">
+          <CarouselContent className="flex  ">
             {courses.map((course) => (
               <CarouselItem
                 key={course.title}
                 className="
                   flex-[0_0_auto]
                   min-w-[250px]
-                  p-2
+                  px-4
                 "
               >
                 <CourseList
@@ -106,8 +106,8 @@ export default function CourseCatalog() {
             ))}
           </CarouselContent>
 
-          <CarouselPrevious className="absolute -left-3 top-1/2 -translate-y-1/2" />
-          <CarouselNext className="absolute -right-3 top-1/2 -translate-y-1/2" />
+          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 mr-2" />
+          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 ml-2" />
         </Carousel>
       </div>
     </div>
