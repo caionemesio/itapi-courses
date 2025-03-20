@@ -4,9 +4,23 @@ import { Input } from '../ui/input'
 import { SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '../ui/button'
+import { useEffect, useState } from 'react'
 
 export function Header() {
-  const isMobile = window.innerWidth < 640
+  const [isMobile, setIsMobile] = useState(false)
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+    const updateIsMobile = () => setIsMobile(window.innerWidth < 640)
+    updateIsMobile()
+    window.addEventListener('resize', updateIsMobile)
+    return () => window.removeEventListener('resize', updateIsMobile)
+  }, [])
+
+  if (!hasMounted) {
+    return null
+  }
   return (
     <header className="w-full p-4 flex gap-4  items-center justify-between bg-white shadow-md border-b border-gray-300 sm:gap-0">
       <div className="hidden md:flex">
