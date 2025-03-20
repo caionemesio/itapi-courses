@@ -37,7 +37,7 @@ export default function CustomCarousel() {
                   fill
                   alt={image.name}
                   quality={100}
-                  className="object-cover object-[130px_center] w-[340px] lg:object-center transition-all duration-300"
+                  className="object-cover object-[130px_center] w-[340px] lg:object-[-65px_center] transition-all duration-300"
                 />
               </div>
             </CarouselItem>
