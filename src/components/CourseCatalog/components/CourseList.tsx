@@ -14,7 +14,6 @@ import { slugifyFunction } from '@/utils/slugyfyFunction'
 interface CourseListProps {
   title: string
   description: string
-  url: string
   image: string
 }
 

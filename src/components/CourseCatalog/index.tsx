@@ -16,48 +16,40 @@ export default function CourseCatalog() {
     () => ({
       1: [
         {
-          title: 'Curso de React',
-          description: 'Aprenda a criar aplicações web com React',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
+          title: 'Unhas em Gel',
+          description:
+            'Técnicas avançadas para unhas impecáveis, resistentes e duradouras.',
+          image: '/assets/images/beauty/unha-gel.jpeg',
         },
         {
-          title: 'Curso de Vue',
-          description: 'Aprenda a criar aplicações web com Vue',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
+          title: 'Design de Sobrancelhas',
+          description: 'Aprenda a modelar sobrancelhas para realçar o olhar.',
+          image: '/assets/images/beauty/sobrancelha.jpeg',
         },
         {
-          title: 'Curso de Angular',
-          description: 'Aprenda a criar aplicações web com Angular',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
-        },
-        {
-          title: 'Curso de Andsgular',
-          description: 'Aprenda a criar aplicações web com Angular',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
-        },
-        {
-          title: 'Curso de sdAngular',
-          description: 'Aprenda a criar aplicações web com Angular',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
+          title: 'Depilação Essencial',
+          description: 'Métodos práticos para uma pele lisa e bem cuidada.',
+          image: '/assets/images/beauty/depilacao.jpeg',
         },
       ],
       2: [
         {
-          title: 'Curso de Photoshop',
-          description: 'Aprenda a editar imagens e criar composições',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
+          title: 'Energia Fotovoltaica',
+          description:
+            'Descubra como gerar energia sustentável com painéis solares.',
+          image: '/assets/images/energy/curso-solar.jpg',
         },
         {
-          title: 'Curso de Illustrator',
-          description: 'Aprenda a criar ilustrações e gráficos vetoriais',
-          url: 'https://www.alura.com.br/',
-          image: '/curso-tecnico.jpg',
+          title: 'NR-10: Segurança em Eletricidade',
+          description:
+            'Normas essenciais para trabalhar com instalações elétricas.',
+          image: '/assets/images/energy/nr-10.jpg',
+        },
+        {
+          title: 'NR-35: Trabalho em Altura',
+          description:
+            'Medidas de segurança para atividades realizadas acima do solo.',
+          image: '/assets/images/energy/nr-35.jpg',
         },
       ],
     }),
@@ -103,7 +95,6 @@ export default function CourseCatalog() {
                 <CourseList
                   title={course.title}
                   description={course.description}
-                  url={course.url}
                   image={course.image}
                 />
               </CarouselItem>

@@ -29,8 +29,8 @@ export default function CourseCategories({
   coursesByCategory,
 }: CourseCategoriesProps) {
   const courseCategories: CourseCategories[] = [
-    { id: 1, name: 'Desenvolvimento' },
-    { id: 2, name: 'Design' },
+    { id: 1, name: 'Beleza' },
+    { id: 2, name: 'Energia' },
   ]
 
   return (
@@ -74,7 +74,6 @@ export default function CourseCategories({
                           <CourseList
                             title={course.title}
                             description={course.description}
-                            url={course.url}
                             image={course.image}
                           />
                         </CarouselItem>

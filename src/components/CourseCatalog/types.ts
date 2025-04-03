@@ -5,7 +5,6 @@ interface CourseCategories {
 interface Course {
   title: string
   description: string
-  url: string
   image: string
 }
 
