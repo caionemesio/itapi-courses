@@ -10,23 +10,28 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import Link from 'next/link'
+import { slugifyFunction } from '@/utils/slugyfyFunction'
 
 export default function CourseCatalog() {
   const coursesByCategory: Record<number, Course[]> = useMemo(
     () => ({
       1: [
         {
+          id: 'curso-1',
           title: 'Unhas em Gel',
           description:
             'Técnicas avançadas para unhas impecáveis, resistentes e duradouras.',
           image: '/assets/images/beauty/unha-gel.jpeg',
         },
         {
+          id: 'curso-2',
           title: 'Design de Sobrancelhas',
           description: 'Aprenda a modelar sobrancelhas para realçar o olhar.',
           image: '/assets/images/beauty/sobrancelha.jpeg',
         },
         {
+          id: 'curso-3',
           title: 'Depilação Essencial',
           description: 'Métodos práticos para uma pele lisa e bem cuidada.',
           image: '/assets/images/beauty/depilacao.jpeg',
@@ -34,18 +39,21 @@ export default function CourseCatalog() {
       ],
       2: [
         {
+          id: 'curso-4',
           title: 'Energia Fotovoltaica',
           description:
             'Descubra como gerar energia sustentável com painéis solares.',
           image: '/assets/images/energy/curso-solar.jpg',
         },
         {
+          id: 'curso-5',
           title: 'NR-10: Segurança em Eletricidade',
           description:
             'Normas essenciais para trabalhar com instalações elétricas.',
           image: '/assets/images/energy/nr-10.jpg',
         },
         {
+          id: 'curso-6',
           title: 'NR-35: Trabalho em Altura',
           description:
             'Medidas de segurança para atividades realizadas acima do solo.',
@@ -92,11 +100,13 @@ export default function CourseCatalog() {
                   px-4
                 "
               >
-                <CourseList
-                  title={course.title}
-                  description={course.description}
-                  image={course.image}
-                />
+                <Link
+                  href={`/cursos/${slugifyFunction(course.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <CourseList course={course} />
+                </Link>
               </CarouselItem>
             ))}
           </CarouselContent>

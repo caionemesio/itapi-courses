@@ -16,6 +16,8 @@ import {
 import type { Course, CourseCategories } from '../types'
 import { Dispatch, SetStateAction } from 'react'
 import CourseList from './CourseList'
+import Link from 'next/link'
+import { slugifyFunction } from '@/utils/slugyfyFunction'
 
 interface CourseCategoriesProps {
   selectedCategory: number
@@ -71,11 +73,13 @@ export default function CourseCategories({
                           key={course.title}
                           className="flex-[0_0_auto] min-w-[250px] px-2"
                         >
-                          <CourseList
-                            title={course.title}
-                            description={course.description}
-                            image={course.image}
-                          />
+                          <Link
+                            href={`/cursos/${slugifyFunction(course.title)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <CourseList course={course} />
+                          </Link>
                         </CarouselItem>
                       ))}
                     </CarouselContent>

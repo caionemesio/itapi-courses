@@ -3,6 +3,7 @@ interface CourseCategories {
   name: string
 }
 interface Course {
+  id: string
   title: string
   description: string
   image: string
