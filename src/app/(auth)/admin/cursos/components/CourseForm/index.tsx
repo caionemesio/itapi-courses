@@ -9,6 +9,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  Form,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -21,7 +22,7 @@ interface CourseFormProps {
 }
 
 export default function CourseForm({ isEditting, onSubmit }: CourseFormProps) {
-  const { control, reset, handleSubmit } = useForm<CourseFormValues>({
+  const form = useForm<CourseFormValues>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
       title: isEditting?.title ?? '',
@@ -32,61 +33,67 @@ export default function CourseForm({ isEditting, onSubmit }: CourseFormProps) {
 
   function handleFormSubmit(data: CourseFormValues) {
     onSubmit(data)
-    reset()
+    form.reset()
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(handleFormSubmit)}
-      className="space-y-4"
-      action="#"
-    >
-      <FormField
-        control={control}
-        name="title"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Título</FormLabel>
-            <FormControl>
-              <Input placeholder="Digite o título do curso" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleFormSubmit)}
+        className="space-y-4"
+        action="#"
+      >
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Título</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite o título do curso" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <FormField
-        control={control}
-        name="description"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Descrição</FormLabel>
-            <FormControl>
-              <Textarea placeholder="Descreva o curso" {...field} rows={4} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Descrição</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Descreva o curso" {...field} rows={4} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <FormField
-        control={control}
-        name="image"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>URL da Imagem</FormLabel>
-            <FormControl className="flex items-center">
-              <Upload className="mr-2" />
-              <Input placeholder="https://example.com/image.jpg" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>URL da Imagem</FormLabel>
+              <FormControl className="flex-1">
+                <Input
+                  iconLeft={<Upload className="text-gray-500" />}
+                  className="w-full"
+                  placeholder="https://example.com/image.jpg"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <Button type="submit" className="w-full">
-        {isEditting ? 'Atualizar Curso' : 'Criar Curso'}
-      </Button>
-    </form>
+        <Button type="submit" className="w-full">
+          {isEditting ? 'Atualizar Curso' : 'Criar Curso'}
+        </Button>
+      </form>
+    </Form>
   )
 }

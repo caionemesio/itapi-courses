@@ -40,7 +40,9 @@ export default function CourseList({
       </div>
       <CardHeader>
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
-        <CardDescription className="">{description}</CardDescription>
+        {description && (
+          <CardDescription className="">{description}</CardDescription>
+        )}
       </CardHeader>
       {isEditting && (
         <CardContent className="pt-0">

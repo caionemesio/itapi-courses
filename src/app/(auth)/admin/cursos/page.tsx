@@ -20,29 +20,37 @@ export default function AdminCoursesPage() {
       id: '1',
       title: 'Curso de Beleza',
       description: 'Aprenda técnicas avançadas de beleza',
-      image: '/images/beauty-course.jpg',
+      image: '/assets/images/beauty/depilacao.jpeg',
     },
     {
       id: '2',
       title: 'Curso de Energia',
       description: 'Entenda os fundamentos da energia renovável',
-      image: '/images/energy-course.jpg',
+      image: '/assets/images/beauty/depilacao.jpeg',
     },
   ]
   const [editForm, setEditForm] = useState<Course | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleDelete = (courseId: string) => {
-    // TODO: implementar lógica de exclusão
     console.log(`Curso ${courseId} excluído`)
   }
   const handleEdit = (course: Course) => {
     setEditForm(course)
-    // TODO: Implementar lógica de edição
+    setIsDialogOpen(true)
     console.log(`Editando curso: ${course.title}`)
   }
   const handleSubmit = (data: CourseFormValues) => {
     console.log('Dados do curso enviados:', data)
+    setEditForm(null)
+    setIsDialogOpen(false)
   }
+
+  const handleCreateNew = () => {
+    setEditForm(null)
+    setIsDialogOpen(true)
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -50,9 +58,12 @@ export default function AdminCoursesPage() {
           <h2 className="text-2xl font-bold text-gray-900">Gerenciar Cursos</h2>
           <p className="text-gray-600">Adicione, edite ou remova cursos</p>
         </div>
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={handleCreateNew}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Novo Curso
             </Button>
