@@ -1,14 +1,22 @@
-// app/(auth)/layout.tsx
 import { ReactNode } from 'react'
-// import { redirect } from 'next/navigation'
-// import { getSession } from '@/lib/session'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export default async function AuthLayout({
   children,
 }: {
   children: ReactNode
 }) {
-  //   const session = await getSession()
-  //   if (!session) redirect('/') // volta pra Home pública
-  return <main>{children}</main>
+  const supabase = createServerComponentClient({ cookies })
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  return <>{children}</>
 }
