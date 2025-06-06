@@ -1,5 +1,3 @@
-import { Award, Users, BookOpen, Headphones } from 'lucide-react'
-
 export const mockingCourse = {
   title: 'Curso de Empreendedorismo',
   description:
@@ -17,19 +15,19 @@ export const mockingCourse = {
   ],
   courseOffers: [
     {
-      icon: <Award className="h-5 w-5" />,
+      iconName: 'Award',
       description: 'Certificado ao concluir',
     },
     {
-      icon: <Users className="h-5 w-5" />,
+      iconName: 'Users',
       description: 'Professores capacitados',
     },
     {
-      icon: <BookOpen className="h-5 w-5" />,
+      iconName: 'BookOpen',
       description: 'Acesso a material exclusivo',
     },
     {
-      icon: <Headphones className="h-5 w-5" />,
+      iconName: 'Headphones',
       description: 'Suporte 24/7',
     },
   ],

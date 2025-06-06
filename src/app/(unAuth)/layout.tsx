@@ -7,7 +7,7 @@ export default function UnAuthLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <Footer />
     </>
   )

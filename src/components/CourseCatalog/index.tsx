@@ -1,8 +1,14 @@
 'use client'
-import { useMemo, useState } from 'react'
+
+import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import useCourses from '@/service/useCourses'
+import { useToast } from '@/hooks/use-toast'
+
 import CourseCategories from './components/CourseCategories'
 import CourseList from './components/CourseList'
-import { Course } from './types'
+import { LoadingState } from '@/components/LoadingState'
 import {
   Carousel,
   CarouselContent,
@@ -10,61 +16,69 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import Link from 'next/link'
-import { slugifyFunction } from '@/utils/slugyfyFunction'
+import { CourseCardSkeleton } from './components/CourseCardsSkeleton'
 
 export default function CourseCatalog() {
-  const coursesByCategory: Record<number, Course[]> = useMemo(
-    () => ({
-      1: [
-        {
-          id: 'curso-1',
-          title: 'Unhas em Gel',
-          description:
-            'Técnicas avançadas para unhas impecáveis, resistentes e duradouras.',
-          image: '/assets/images/beauty/unha-gel.jpeg',
-        },
-        {
-          id: 'curso-2',
-          title: 'Design de Sobrancelhas',
-          description: 'Aprenda a modelar sobrancelhas para realçar o olhar.',
-          image: '/assets/images/beauty/sobrancelha.jpeg',
-        },
-        {
-          id: 'curso-3',
-          title: 'Depilação Essencial',
-          description: 'Métodos práticos para uma pele lisa e bem cuidada.',
-          image: '/assets/images/beauty/depilacao.jpeg',
-        },
-      ],
-      2: [
-        {
-          id: 'curso-4',
-          title: 'Energia Fotovoltaica',
-          description:
-            'Descubra como gerar energia sustentável com painéis solares.',
-          image: '/assets/images/energy/curso-solar.jpg',
-        },
-        {
-          id: 'curso-5',
-          title: 'NR-10: Segurança em Eletricidade',
-          description:
-            'Normas essenciais para trabalhar com instalações elétricas.',
-          image: '/assets/images/energy/nr-10.jpg',
-        },
-        {
-          id: 'curso-6',
-          title: 'NR-35: Trabalho em Altura',
-          description:
-            'Medidas de segurança para atividades realizadas acima do solo.',
-          image: '/assets/images/energy/nr-35.jpg',
-        },
-      ],
-    }),
-    [],
-  )
-  const [selectedCategory, setSelectedCategory] = useState(1)
-  const courses = coursesByCategory[selectedCategory] || []
+  const [selectedCategory, setSelectedCategory] = useState<number>(1)
+  const { getCategoriesWithCourseCount, getCoursesByCategory } = useCourses()
+  const { toast } = useToast()
+
+  const {
+    data: categories,
+    isLoading: isCategoriesLoading,
+    error: categoriesError,
+  } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategoriesWithCourseCount,
+  })
+
+  const {
+    data: courses,
+    isLoading: isCoursesLoading,
+    error: coursesError,
+  } = useQuery({
+    queryKey: ['courses', selectedCategory],
+    queryFn: () => getCoursesByCategory(selectedCategory),
+    enabled: !!selectedCategory,
+  })
+
+  useEffect(() => {
+    if (categoriesError) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao carregar categorias',
+        description:
+          'Não foi possível buscar as categorias. Tente novamente mais tarde.',
+      })
+    }
+  }, [categoriesError, toast])
+
+  useEffect(() => {
+    if (coursesError) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao carregar cursos',
+        description:
+          'Não foi possível buscar os cursos desta categoria. Tente novamente mais tarde.',
+      })
+    }
+  }, [coursesError, toast])
+
+  if (isCategoriesLoading) {
+    return <LoadingState message="Preparando o catálogo de cursos..." />
+  }
+
+  if (categories && categories.length === 0) {
+    return (
+      <div className="flex justify-center items-center min-h-72 p-10 text-gray-500">
+        Nenhuma categoria encontrada.
+      </div>
+    )
+  }
+
+  if (categoriesError || !categories) {
+    return null
+  }
 
   return (
     <div className="py-14">
@@ -72,7 +86,7 @@ export default function CourseCatalog() {
         <div className="py-6 px-4">
           <h1
             id="categorias"
-            className="text-primary-800  text-2xl font-semibold md:text-5xl"
+            className="text-primary-800 text-2xl font-semibold md:text-5xl"
           >
             Formação Municipal
           </h1>
@@ -81,34 +95,47 @@ export default function CourseCatalog() {
             para o mercado de trabalho
           </p>
         </div>
+
         <CourseCategories
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
-          coursesByCategory={coursesByCategory}
+          courses={courses || []}
+          categories={categories}
         />
       </div>
 
-      <div className="bg-lightBackground pb-11 w-full  hidden md:block ">
-        <Carousel className="relative overflow-hidden  max-w-[1440px] mx-auto px-12">
-          <CarouselContent className="flex  ">
-            {courses.map((course) => (
-              <CarouselItem
-                key={course.title}
-                className="
-                  flex-[0_0_auto]
-                  min-w-[250px]
-                  px-4
-                "
-              >
-                <Link
-                  href={`/cursos/${slugifyFunction(course.title)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+      <div className="bg-lightBackground pb-11 w-full hidden md:block">
+        <Carousel className="relative overflow-hidden max-w-[1440px] mx-auto px-12">
+          <CarouselContent className="flex min-h-72 items-start">
+            {isCoursesLoading ? (
+              Array.from({ length: 4 }).map((_, index) => (
+                <CarouselItem
+                  key={index}
+                  className="flex-[0_0_auto] min-w-[250px] px-4"
                 >
-                  <CourseList course={course} />
-                </Link>
-              </CarouselItem>
-            ))}
+                  <CourseCardSkeleton />
+                </CarouselItem>
+              ))
+            ) : courses && courses.length > 0 ? (
+              courses.map((course) => (
+                <CarouselItem
+                  key={course.id}
+                  className="flex-[0_0_auto] min-w-[250px] px-4"
+                >
+                  <Link
+                    href={`/cursos/${course.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <CourseList course={course} />
+                  </Link>
+                </CarouselItem>
+              ))
+            ) : (
+              <div className="w-full text-center p-10 text-gray-500">
+                Nenhum curso encontrado para esta categoria.
+              </div>
+            )}
           </CarouselContent>
 
           <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 mr-2" />
