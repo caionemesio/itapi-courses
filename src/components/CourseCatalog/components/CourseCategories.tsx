@@ -13,17 +13,18 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel'
 
-import type { Course, CourseCategories } from '../types'
+import type { Course } from '../types'
 import { Dispatch, SetStateAction } from 'react'
 import CourseList from './CourseList'
 import Link from 'next/link'
 import { slugifyFunction } from '@/utils/slugyfyFunction'
+import { CategoryFormValues } from '@/app/(auth)/admin/categorias/components/CategoryForm/validations'
 
 interface CourseCategoriesProps {
   selectedCategory: number
   setSelectedCategory: Dispatch<SetStateAction<number>>
   courses: Course[]
-  categories: CourseCategories[]
+  categories: CategoryFormValues[]
 }
 
 export default function CourseCategories({
@@ -38,7 +39,7 @@ export default function CourseCategories({
         {categories.map((category) => (
           <Button
             key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
+            onClick={() => setSelectedCategory(category.id!)}
             className={`bg-transparent text-lg rounded-none font-semibold shadow-none border-0 border-b-2 ${
               selectedCategory === category.id
                 ? 'border-primary-800 text-primary-800'
@@ -47,7 +48,7 @@ export default function CourseCategories({
             variant="outline"
             size="sm"
           >
-            {category.name}
+            {category.title}
           </Button>
         ))}
       </div>
@@ -62,10 +63,10 @@ export default function CourseCategories({
             <AccordionItem
               key={category.id}
               value={String(category.id)}
-              onClick={() => setSelectedCategory(category.id)}
+              onClick={() => setSelectedCategory(category.id!)}
             >
               <AccordionTrigger className="text-lg font-semibold">
-                {category.name}
+                {category.title}
               </AccordionTrigger>
               <AccordionContent>
                 {selectedCategory === category.id && (

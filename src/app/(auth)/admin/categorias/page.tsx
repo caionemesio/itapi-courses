@@ -14,55 +14,88 @@ import {
 import CategoryForm from './components/CategoryForm'
 import { CategoryFormValues } from './components/CategoryForm/validations'
 import CategoryCard from './components/CategoryCard'
-
-interface Category {
-  id: string
-  title: string
-  courseCount: number
-}
+import useCourses, { UpsertCategoryData } from '@/service/useCourses'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { LoadingState } from '@/components/LoadingState'
+import { useToast } from '@/hooks/use-toast'
 
 export default function AdminCategoriesPage() {
-  const mockingCategories: Category[] = [
-    {
-      id: 'beleza',
-      title: 'Beleza',
-      courseCount: 0,
-    },
-    {
-      id: 'energia',
-      title: 'Energia',
-      courseCount: 3,
-    },
-  ]
-
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
   const [editCategory, setEditCategory] = useState<CategoryFormValues | null>(
     null,
   )
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const handleDelete = (categoryId: string) => {
-    console.log(`Categoria ${categoryId} excluída`)
+  const { getCategoriesWithCourseCount, upsertCategory, deleteCategory } =
+    useCourses()
+
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategoriesWithCourseCount,
+  })
+
+  const upsertMutation = useMutation({
+    mutationFn: (data: UpsertCategoryData) => upsertCategory(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      toast({
+        title: 'Sucesso!',
+        description: 'Categoria salva com sucesso.',
+        variant: 'success',
+      })
+      setIsDialogOpen(false)
+    },
+    onError: (error) =>
+      toast({
+        variant: 'destructive',
+        title: 'Erro!',
+        description: error.message,
+      }),
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (categoryId: number) => deleteCategory(categoryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      toast({
+        title: 'Sucesso!',
+        description: 'Categoria excluída.',
+        variant: 'success',
+      })
+    },
+    onError: (error) =>
+      toast({
+        variant: 'destructive',
+        title: 'Erro!',
+        description: error.message,
+      }),
+  })
+
+  const handleDelete = (category: CategoryFormValues) => {
+    if (
+      confirm(`Tem certeza que deseja excluir a categoria "${category.title}"?`)
+    ) {
+      deleteMutation.mutate(category.id!)
+    }
   }
 
-  const handleEdit = (category: Category) => {
+  const handleEdit = (category: CategoryFormValues) => {
     setEditCategory(category)
     setIsDialogOpen(true)
     console.log(`Editando categoria: ${category.title}`)
   }
 
   const handleSubmit = (data: CategoryFormValues) => {
-    if (editCategory) {
-      console.log('Dados da categoria editados:', {
-        id: editCategory.id,
-        ...data,
-      })
-    } else {
-      console.log('Nova categoria adicionada:', {
-        id: Date.now().toString(),
-        courseCount: 0,
-        ...data,
-      })
-    }
+    const id = editCategory ? editCategory.id : undefined
+    upsertMutation.mutate({
+      id,
+      title: data.title,
+      slug: data.title
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, ''),
+    })
     setEditCategory(null)
     setIsDialogOpen(false)
   }
@@ -70,6 +103,10 @@ export default function AdminCategoriesPage() {
   const handleCreateNew = () => {
     setEditCategory(null)
     setIsDialogOpen(true)
+  }
+
+  if (isLoading) {
+    return <LoadingState message="Carregando categorias..." />
   }
 
   return (
@@ -103,14 +140,15 @@ export default function AdminCategoriesPage() {
         </Dialog>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockingCategories.map((category) => (
-          <CategoryCard
-            key={category.id}
-            category={category}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
-        ))}
+        {categories &&
+          categories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          ))}
       </div>
     </div>
   )

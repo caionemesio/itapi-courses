@@ -12,17 +12,12 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-
-interface Category {
-  id: string
-  title: string
-  courseCount: number
-}
+import { CategoryFormValues } from './CategoryForm/validations'
 
 interface CategoryCardProps {
-  category: Category
-  onEdit: (category: Category) => void
-  onDelete: (categoryId: string) => void
+  category: CategoryFormValues
+  onEdit: (category: CategoryFormValues) => void
+  onDelete: (categoryId: CategoryFormValues) => void
 }
 
 export default function CategoryCard({
@@ -50,7 +45,7 @@ export default function CategoryCard({
         <Button
           variant="destructive"
           size="sm"
-          onClick={() => onDelete(category.id)}
+          onClick={() => category.id && onDelete(category)}
           disabled={!canDelete}
           className={cn(!canDelete && 'cursor-not-allowed opacity-50')}
         >

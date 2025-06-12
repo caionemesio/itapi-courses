@@ -6,7 +6,16 @@ const nextConfig: NextConfig = {
       'www.google.com',
       'www.alura.com.br',
       'encrypted-tbn0.gstatic.com',
-    ], // Adicione outros domínios que você precisar
+      'simulare.com.br',
+    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'nzzvzeyickprazrurdws.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
   },
 }
 

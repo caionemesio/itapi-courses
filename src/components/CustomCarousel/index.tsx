@@ -37,20 +37,21 @@ export default function CustomCarousel() {
   return (
     <div className="min-h-[300px] mt-4 flex justify-center items-center lg:max-w-5xl mx-auto overflow-hidden">
       <Carousel
+        className="w-full max-w-[920px]"
         plugins={[plugin.current]}
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
           {slides?.map((slide) => (
-            <CarouselItem key={slide.id} className="min-w-[400px]">
+            <CarouselItem key={slide.id} className="basis-full">
               <div className="relative w-full h-[400px] overflow-hidden">
                 <Image
                   src={slide.imageUrl}
                   fill
                   alt={slide.title}
                   quality={100}
-                  className="object-cover object-[130px_center] w-[340px] lg:object-[-65px_center] transition-all duration-300"
+                  className="object-cover w-full h-full object-left"
                 />
               </div>
             </CarouselItem>

@@ -104,9 +104,9 @@ export default function CourseCatalog() {
         />
       </div>
 
-      <div className="bg-lightBackground pb-11 w-full hidden md:block">
+      <div className="bg-lightBackground pb-2 w-full min-h-[380px] hidden md:block">
         <Carousel className="relative overflow-hidden max-w-[1440px] mx-auto px-12">
-          <CarouselContent className="flex min-h-72 items-start">
+          <CarouselContent className="flex  items-start">
             {isCoursesLoading ? (
               Array.from({ length: 4 }).map((_, index) => (
                 <CarouselItem

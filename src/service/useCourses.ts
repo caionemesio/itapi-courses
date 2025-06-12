@@ -1,10 +1,17 @@
-import { Course, CourseCategories } from '@/components/CourseCatalog/types'
+import { CategoryFormValues } from '@/app/(auth)/admin/categorias/components/CategoryForm/validations'
+import { Course } from '@/components/CourseCatalog/types'
 import { CourseData } from '@/types/CourseData'
-import { createClient } from '@/utils/supabase/client'
+import { createSupabaseBrowserClient } from '@/utils/supabase/client'
+
+export type UpsertCategoryData = {
+  id?: number
+  title: string
+  slug: string
+}
 
 export default function useCourses() {
+  const supabase = createSupabaseBrowserClient()
   async function getCategoriesWithCourseCount() {
-    const supabase = createClient()
     const { data, error } = await supabase.from('categories').select(`
       id,
       title,
@@ -17,16 +24,48 @@ export default function useCourses() {
       return []
     }
 
-    const formattedData: CourseCategories[] = data.map((category) => ({
+    const formattedData: CategoryFormValues[] = data.map((category) => ({
       id: category.id,
-      name: category.title,
+      title: category.title,
+      slug: category.slug,
       courseCount: category.courses[0] ? category.courses[0].count : 0,
     }))
 
     return formattedData
   }
+
+  async function upsertCategory(categoryData: UpsertCategoryData) {
+    const objectToUpsert = {
+      id: categoryData.id,
+      title: categoryData.title,
+      slug: categoryData.slug,
+    }
+
+    const { data, error } = await supabase
+      .from('categories')
+      .upsert(objectToUpsert)
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Erro ao salvar categoria:', error)
+      throw new Error('Não foi possível salvar a categoria.')
+    }
+    return data
+  }
+
+  async function deleteCategory(categoryId: number): Promise<void> {
+    const { error } = await supabase
+      .from('categories')
+      .delete()
+      .match({ id: categoryId })
+
+    if (error) {
+      console.error('Erro ao deletar categoria:', error)
+      throw new Error('Não foi possível deletar a categoria.')
+    }
+  }
   async function getCoursesByCategory(categoryId: number): Promise<Course[]> {
-    const supabase = createClient()
     const { data, error } = await supabase
       .from('courses')
       .select('id, title, description, image_url, slug')
@@ -48,7 +87,6 @@ export default function useCourses() {
   async function getCourseBySlug(
     courseSlug: string,
   ): Promise<CourseData | null> {
-    const supabase = createClient()
     const { data, error } = await supabase
       .from('courses')
       .select('*')
@@ -74,7 +112,6 @@ export default function useCourses() {
   async function searchCourses(
     searchTerm: string,
   ): Promise<{ slug: string; title: string }[]> {
-    const supabase = createClient()
     if (!searchTerm) return []
 
     const { data, error } = await supabase
@@ -90,6 +127,8 @@ export default function useCourses() {
   }
   return {
     getCategoriesWithCourseCount,
+    upsertCategory,
+    deleteCategory,
     getCoursesByCategory,
     getCourseBySlug,
     searchCourses,

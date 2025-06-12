@@ -1,6 +1,10 @@
 'use client'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+
+import useSlides, { Slide, UpsertSlideData } from '@/service/useSlides'
+import { useToast } from '@/hooks/use-toast'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -10,47 +14,70 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-
 import SlideForm from './components/SlideForm'
-import { SlideFormValues } from './components/SlideForm/validations'
 import CourseList from '@/components/CourseCatalog/components/CourseList'
+import { LoadingState } from '@/components/LoadingState'
 
 export default function AdminCarouselPage() {
-  const mockingSlides = [
-    {
-      id: 'slide1',
-      title: 'Secretaria da Juventude',
-      image: '/imagem-slide.jpg',
-    },
-    {
-      id: 'slide2',
-      title: 'Aviso da Secjuv',
-      image: '/advice-secjuv.png',
-    },
-  ]
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
+  const { getSlides, upsertSlide, deleteSlide } = useSlides()
 
-  const [editForm, setEditForm] = useState<SlideFormValues | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editingSlide, setEditingSlide] = useState<Slide | null>(null)
 
-  const handleDelete = (slideId: string) => {
-    console.log(`Slide ${slideId} excluído`)
-  }
+  const { data: slides, isLoading } = useQuery({
+    queryKey: ['slides'],
+    queryFn: getSlides,
+  })
 
-  const handleEdit = (slide: SlideFormValues) => {
-    setEditForm(slide)
+  const upsertMutation = useMutation({
+    mutationFn: (data: UpsertSlideData) => upsertSlide(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['slides'] })
+      toast({ title: 'Sucesso!', description: 'Slide salvo com sucesso.' })
+      setIsDialogOpen(false)
+    },
+    onError: (error) =>
+      toast({
+        variant: 'destructive',
+        title: 'Erro!',
+        description: error.message,
+      }),
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: (slide: Slide) => deleteSlide(slide),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['slides'] })
+      toast({ title: 'Sucesso!', description: 'Slide excluído.' })
+    },
+    onError: (error) =>
+      toast({
+        variant: 'destructive',
+        title: 'Erro!',
+        description: error.message,
+      }),
+  })
+
+  const handleEdit = (slide: Slide) => {
+    setEditingSlide(slide)
     setIsDialogOpen(true)
-    console.log(`Editando slide: ${slide.title}`)
-  }
-
-  const handleSubmit = (data: SlideFormValues) => {
-    console.log('Dados do slide enviados:', data)
-    setEditForm(null)
-    setIsDialogOpen(false)
   }
 
   const handleCreateNew = () => {
-    setEditForm(null)
+    setEditingSlide(null)
     setIsDialogOpen(true)
+  }
+
+  const handleDelete = (slide: Slide) => {
+    if (confirm(`Tem certeza que deseja excluir o slide "${slide.title}"?`)) {
+      deleteMutation.mutate(slide)
+    }
+  }
+
+  if (isLoading) {
+    return <LoadingState message="Carregando slides..." />
   }
 
   return (
@@ -76,21 +103,34 @@ export default function AdminCarouselPage() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {editForm ? 'Editar Imagem' : 'Criar nova Imagem'}
+                {editingSlide ? 'Editar Imagem' : 'Criar nova Imagem'}
               </DialogTitle>
             </DialogHeader>
-            <SlideForm isEditting={editForm} onSubmit={handleSubmit} />
+            <SlideForm
+              isEditting={
+                editingSlide
+                  ? { ...editingSlide, image: editingSlide.imageUrl }
+                  : null
+              }
+              onSubmit={(data) => upsertMutation.mutate(data)}
+              isLoading={upsertMutation.isPending}
+            />
           </DialogContent>
         </Dialog>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockingSlides.map((slide) => (
+        {slides?.map((slide) => (
           <CourseList
             key={slide.id}
-            course={slide}
+            course={{
+              id: slide.id,
+              title: slide.title,
+              image: slide.imageUrl,
+              slug: '',
+            }}
             isEditting
-            onDelete={handleDelete}
-            onEdit={handleEdit}
+            onDelete={() => handleDelete(slide)}
+            onEdit={() => handleEdit(slide)}
           />
         ))}
       </div>

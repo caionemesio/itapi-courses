@@ -1,8 +1,3 @@
-interface CourseCategories {
-  id: number
-  name: string
-  courseCount?: number
-}
 interface Course {
   id: string
   title: string
@@ -11,4 +6,4 @@ interface Course {
   slug?: string
 }
 
-export type { CourseCategories, Course }
+export type { Course }

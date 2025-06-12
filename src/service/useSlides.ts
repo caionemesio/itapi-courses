@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/client'
+import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 
 export type Slide = {
   id: string
@@ -14,7 +14,7 @@ export type UpsertSlideData = {
 }
 
 export default function useSlides() {
-  const supabase = createClient()
+  const supabase = createSupabaseBrowserClient()
 
   async function getSlides(): Promise<Slide[]> {
     const { data, error } = await supabase.from('slides').select('*')
