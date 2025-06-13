@@ -2,7 +2,7 @@ export default function DashBoardPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      <p className="text-gray-600">This is the admin dashboard page.</p>
+      <p className="text-gray-600">Essa é a página de dashboar.</p>
     </div>
   )
 }

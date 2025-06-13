@@ -123,10 +123,11 @@ export default function AdminCarouselPage() {
           <CourseList
             key={slide.id}
             course={{
-              id: slide.id,
+              id: Number(slide.id),
               title: slide.title,
-              image: slide.imageUrl,
+              imageUrl: slide.imageUrl,
               slug: '',
+              description: '',
             }}
             isEditting
             onDelete={() => handleDelete(slide)}

@@ -13,17 +13,17 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel'
 
-import type { Course } from '../types'
 import { Dispatch, SetStateAction } from 'react'
 import CourseList from './CourseList'
 import Link from 'next/link'
 import { slugifyFunction } from '@/utils/slugyfyFunction'
 import { CategoryFormValues } from '@/app/(auth)/admin/categorias/components/CategoryForm/validations'
+import { CourseCard } from '@/types/CourseData'
 
 interface CourseCategoriesProps {
-  selectedCategory: number
-  setSelectedCategory: Dispatch<SetStateAction<number>>
-  courses: Course[]
+  selectedCategory: number | null
+  setSelectedCategory: Dispatch<SetStateAction<number | null>>
+  courses: CourseCard[]
   categories: CategoryFormValues[]
 }
 

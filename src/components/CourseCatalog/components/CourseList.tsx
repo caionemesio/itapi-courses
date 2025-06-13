@@ -11,14 +11,23 @@ import {
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Edit, Trash2 } from 'lucide-react'
-import { Course } from '../types'
+import { Course, CourseCard } from '@/types/CourseData'
 
-interface CourseListProps {
-  course: Course
-  isEditting?: boolean
-  onEdit?: (course: Course) => void
-  onDelete?: (courseId: string) => void
+interface CourseListDisplayProps {
+  isEditting?: false
+  course: CourseCard
+  onEdit?: never
+  onDelete?: never
 }
+
+interface CourseListEditingProps {
+  isEditting: true
+  course: Course
+  onEdit: (course: Course) => void
+  onDelete: (courseId: number) => void
+}
+
+type CourseListProps = CourseListDisplayProps | CourseListEditingProps
 
 export default function CourseList({
   course,
@@ -26,22 +35,28 @@ export default function CourseList({
   onDelete,
   onEdit,
 }: CourseListProps) {
-  const { title, description, image } = course
+  const { title, description, imageUrl } = course
 
   return (
     <Card className="w-[350px] min-h-72">
       <div className="relative w-full h-48">
         <Image
-          src={image}
+          src={imageUrl}
           alt={title}
           fill
           className="object-cover rounded-t-md"
         />
       </div>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold min-h-14">
+          {title}
+        </CardTitle>
         {description && (
-          <CardDescription className="">{description}</CardDescription>
+          <CardDescription className="min-h-[80px]">
+            {description.length > 150
+              ? `${description.slice(0, 130)}...`
+              : description}{' '}
+          </CardDescription>
         )}
       </CardHeader>
       {isEditting && (

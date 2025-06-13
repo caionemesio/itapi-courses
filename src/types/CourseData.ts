@@ -1,11 +1,29 @@
+import { CourseFormValues } from '@/app/(auth)/admin/cursos/components/CourseForm/validations'
 import { OfferFromDB } from '@/components/CourseOffers'
-
-export interface CourseData {
+interface Course {
+  id: number
   title: string
   description: string
-  learnTopics: string[]
-  courseOffers: OfferFromDB[]
-  formsUrl: string
-  videoUrl?: string
   imageUrl: string
+  slug: string
+  videoUrl?: string
+  formsUrl?: string
+  learnTopics?: string[]
+  courseOffers?: OfferFromDB[]
+  categoryId?: number
+  categories?: {
+    id: number
+    title: string
+  } | null
 }
+type CourseCard = Pick<
+  Course,
+  'id' | 'title' | 'description' | 'imageUrl' | 'slug'
+>
+
+interface UpsertCourseData extends CourseFormValues {
+  id?: number
+  imageFile?: File
+}
+
+export type { Course, CourseCard, UpsertCourseData }

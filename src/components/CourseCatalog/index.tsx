@@ -19,7 +19,7 @@ import {
 import { CourseCardSkeleton } from './components/CourseCardsSkeleton'
 
 export default function CourseCatalog() {
-  const [selectedCategory, setSelectedCategory] = useState<number>(1)
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
   const { getCategoriesWithCourseCount, getCoursesByCategory } = useCourses()
   const { toast } = useToast()
 
@@ -38,7 +38,7 @@ export default function CourseCatalog() {
     error: coursesError,
   } = useQuery({
     queryKey: ['courses', selectedCategory],
-    queryFn: () => getCoursesByCategory(selectedCategory),
+    queryFn: () => getCoursesByCategory(selectedCategory!),
     enabled: !!selectedCategory,
   })
 
@@ -63,6 +63,12 @@ export default function CourseCatalog() {
       })
     }
   }, [coursesError, toast])
+
+  useEffect(() => {
+    if (categories && categories.length > 0 && !selectedCategory) {
+      setSelectedCategory(categories[0].id ?? null)
+    }
+  }, [categories, selectedCategory])
 
   if (isCategoriesLoading) {
     return <LoadingState message="Preparando o catálogo de cursos..." />
