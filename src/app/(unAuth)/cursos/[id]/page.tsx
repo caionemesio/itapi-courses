@@ -41,7 +41,7 @@ export default function CoursePage() {
       <CourseHeader
         title={course.title}
         description={course.description}
-        formsUrl={course.formsUrl}
+        formsUrl={course.formsUrl || ''}
         videoUrl={course.videoUrl}
       />
 
